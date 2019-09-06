@@ -1,7 +1,7 @@
-var canvasHeight = 500;
-var canvasWidth = 500;
-var cols = 20;
-var rows = 20;
+var canvasHeight = 700;
+var canvasWidth = 700;
+var cols = 10;
+var rows = 10;
 var height, width;
 var grid = new Array(rows);
 var current;
@@ -23,7 +23,7 @@ function Cell(x, y) {
     this.isAdjecent = false;
     this.wall = false;
 
-    if (random(1) < 0.6) {
+    if (random(1) < 0.45) {
         this.wall = true;
     }
 
@@ -128,35 +128,36 @@ function dijkstra() {
 
         grid[minCoords.y][minCoords.x].visited = true;
         grid[minCoords.y][minCoords.x].isAdjecent = false;
-        let u = grid[minCoords.y][minCoords.x];
+        let min = grid[minCoords.y][minCoords.x];
 
-        buildPath(u);
+        buildPath(min);
 
-        if (u.x === end.x && u.y === end.y) {
-            noLoop();
+        if (min.x === end.x && min.y === end.y) {
             console.log('FOUND');
+            noLoop();
+            return;
         }
 
-        for (let i = 0; i < u.adjacent.length; ++i) {
-            let adj = u.adjacent[i];
-            let dist = u.distance + 1;
+        for (let i = 0; i < min.adjacent.length; ++i) {
+            let adj = min.adjacent[i];
+            let dist = min.distance + 1;
 
             grid[adj.y][adj.x].isAdjecent = true;
 
             if (adj.visited === false && dist < adj.distance && adj.wall === false) {
                 grid[adj.y][adj.x].distance = dist;
-                grid[adj.y][adj.x].previous = u;
+                grid[adj.y][adj.x].previous = min;
             }
         }
     } else {
-        noLoop();
         console.log('NOT FOUND');
+        noLoop();
     }
 }
 
 function setup() {
     createCanvas(canvasWidth, canvasHeight);
-    frameRate(30);
+    frameRate(60);
     height = canvasHeight / rows;
     width = canvasWidth / cols;
 
