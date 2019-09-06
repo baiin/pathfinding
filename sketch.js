@@ -1,7 +1,7 @@
 var canvasHeight = 500;
 var canvasWidth = 500;
-var cols = 5;
-var rows = 5;
+var cols = 20;
+var rows = 20;
 var height, width;
 var grid = new Array(rows);
 var current;
@@ -10,6 +10,7 @@ var start, end;
 var shortestPaths = [];
 var visited = [];
 var unvisited = [];
+var path = [];
 
 function Cell(x, y) {
     this.x = x;
@@ -17,21 +18,18 @@ function Cell(x, y) {
     this.shortestPaths = [];
     this.visited = false;
     this.previous = null;
-    this.distance = this.x === x && this.y === y ? 0 : infinity;
+    this.distance = this.x === start.x && this.y === start.y ? 0 : infinity;
     this.adjacent = [];
+    this.isAdjecent = false;
     this.wall = false;
 
-    if (random(1) < 0.2) {
+    if (random(1) < 0.6) {
         this.wall = true;
     }
 
-    this.show = function() {
+    this.show = function(color) {
         stroke(0);
-        fill(255);
-
-        if (this.visited) {
-            fill(255, 0, 0);
-        }
+        fill(color);
 
         if (this.wall) {
             fill(0);
@@ -108,14 +106,33 @@ function getUnvistedLength() {
     return unvisited;
 }
 
+function buildPath(cell) {
+    path = [];
+
+    var temp = cell;
+
+    while (temp) {
+        path.push(temp);
+        temp = temp.previous;
+    }
+}
+
 function dijkstra() {
     if (getUnvistedLength() > 0) {
         let minCoords = getUnvisitedCellWithMinDistance();
+        if (minCoords.x === null || minCoords.y === null) {
+            console.log('NOT POSSIBLE');
+            noLoop();
+            return;
+        }
+
         grid[minCoords.y][minCoords.x].visited = true;
+        grid[minCoords.y][minCoords.x].isAdjecent = false;
         let u = grid[minCoords.y][minCoords.x];
 
+        buildPath(u);
+
         if (u.x === end.x && u.y === end.y) {
-            console.log(u);
             noLoop();
             console.log('FOUND');
         }
@@ -124,7 +141,9 @@ function dijkstra() {
             let adj = u.adjacent[i];
             let dist = u.distance + 1;
 
-            if (dist < adj.distance && adj.wall === false) {
+            grid[adj.y][adj.x].isAdjecent = true;
+
+            if (adj.visited === false && dist < adj.distance && adj.wall === false) {
                 grid[adj.y][adj.x].distance = dist;
                 grid[adj.y][adj.x].previous = u;
             }
@@ -137,7 +156,7 @@ function dijkstra() {
 
 function setup() {
     createCanvas(canvasWidth, canvasHeight);
-    frameRate(15);
+    frameRate(30);
     height = canvasHeight / rows;
     width = canvasWidth / cols;
 
@@ -150,8 +169,6 @@ function setup() {
         x: cols - 1,
         y: rows - 1
     };
-
-    console.log(end);
 
     for (let i = 0; i < rows; ++i) {
         grid[i] = new Array(cols);
@@ -166,15 +183,28 @@ function setup() {
         }
     }
 
-    console.log(grid);
+    grid[start.y][start.x].wall = false;
+    grid[end.y][end.x].wall = false;
 }
 
 function draw() {
     dijkstra();
 
-    for (var i = 0; i < rows; ++i) {
-        for (var j = 0; j < cols; ++j) {
-            grid[i][j].show();
+    background(0);
+
+    for (let i = 0; i < rows; ++i) {
+        for (let j = 0; j < cols; ++j) {
+            if (grid[i][j].visited) {
+                grid[i][j].show(color(255, 102, 26));
+            } else if (grid[i][j].isAdjecent) {
+                grid[i][j].show(color(204, 153, 0));
+            } else {
+                grid[i][j].show(color(255, 255, 255));
+            }
         }
+    }
+
+    for (let i = 0; i < path.length; ++i) {
+        path[i].show(color(51, 102, 153));
     }
 }
