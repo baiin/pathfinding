@@ -1,7 +1,7 @@
 var canvasHeight = 350;
 var canvasWidth = 350;
-var cols = 10;
-var rows = 10;
+var cols = 20;
+var rows = 20;
 var height, width;
 var grid = new Array(rows);
 var infinity = Number.MAX_VALUE;
@@ -58,6 +58,7 @@ function Cell(x, y) {
       this.adjacent.push(grid[this.y][this.x - 1]);
     }
 
+    /*
     if (this.x > 0 && this.y > 0) {
       this.adjacent.push(grid[this.y - 1][this.x - 1]);
     }
@@ -73,6 +74,7 @@ function Cell(x, y) {
     if (this.x < cols - 1 && this.y < rows - 1) {
       this.adjacent.push(grid[this.y + 1][this.x + 1]);
     }
+    */
   };
 }
 
@@ -90,11 +92,11 @@ function removeFromArray(arr, elt) {
 
 function a_star() {
   for (var i = 0; i < closedSet.length; ++i) {
-    closedSet[i].show(color(255, 0, 0));
+    closedSet[i].show(color(255, 153, 51));
   }
 
   for (var i = 0; i < openedSet.length; ++i) {
-    openedSet[i].show(color(0, 255, 0));
+    openedSet[i].show(color(255, 51, 0));
   }
 
   if (openedSet.length > 0) {
@@ -145,13 +147,7 @@ function a_star() {
       }
     }
 
-    path = [];
-    var temp = current;
-    path.push(temp);
-    while (temp.previous) {
-      path.push(temp.previous);
-      temp = temp.previous;
-    }
+    buildPath(current);
   } else {
     console.log("no solution");
     noLoop();
@@ -212,9 +208,9 @@ function dijkstra() {
   for (let i = 0; i < rows; ++i) {
     for (let j = 0; j < cols; ++j) {
       if (grid[i][j].visited) {
-        grid[i][j].show(color(255, 102, 26));
+        grid[i][j].show(color(255, 153, 51));
       } else if (grid[i][j].isAdjecent) {
-        grid[i][j].show(color(204, 153, 0));
+        grid[i][j].show(color(255, 51, 0));
       }
     }
   }
@@ -300,10 +296,10 @@ function draw() {
     }
   }
 
-  //dijkstra();
-  a_star();
+  dijkstra();
+  //a_star();
 
   for (let i = 0; i < path.length; ++i) {
-    path[i].show(color(51, 102, 153));
+    path[i].show(color(255, 255, 0));
   }
 }
