@@ -1,5 +1,5 @@
-var canvasHeight = 350;
-var canvasWidth = 350;
+var canvasHeight = 500;
+var canvasWidth = 500;
 var cols = 20;
 var rows = 20;
 var height, width;
@@ -7,6 +7,8 @@ var grid = new Array(rows);
 var infinity = Number.MAX_VALUE;
 var start, end;
 var path = [];
+var diagonals = false;
+var started = false;
 
 // a_star
 var openedSet = []; // nodes that still need to be processed
@@ -26,9 +28,9 @@ function Cell(x, y) {
   this.isAdjecent = false;
   this.wall = false;
 
-  if (random(1) < 0.3) {
-    this.wall = true;
-  }
+  // if (random(1) < 0.3) {
+  //   this.wall = true;
+  // }
 
   this.show = function(color) {
     stroke(0);
@@ -58,28 +60,28 @@ function Cell(x, y) {
       this.adjacent.push(grid[this.y][this.x - 1]);
     }
 
-    /*
-    if (this.x > 0 && this.y > 0) {
-      this.adjacent.push(grid[this.y - 1][this.x - 1]);
-    }
+    if (diagonals) {
+      if (this.x > 0 && this.y > 0) {
+        this.adjacent.push(grid[this.y - 1][this.x - 1]);
+      }
 
-    if (this.x < cols - 1 && this.y > 0) {
-      this.adjacent.push(grid[this.y - 1][this.x + 1]);
-    }
+      if (this.x < cols - 1 && this.y > 0) {
+        this.adjacent.push(grid[this.y - 1][this.x + 1]);
+      }
 
-    if (this.x > 0 && this.y < rows - 1) {
-      this.adjacent.push(grid[this.y + 1][this.x - 1]);
-    }
+      if (this.x > 0 && this.y < rows - 1) {
+        this.adjacent.push(grid[this.y + 1][this.x - 1]);
+      }
 
-    if (this.x < cols - 1 && this.y < rows - 1) {
-      this.adjacent.push(grid[this.y + 1][this.x + 1]);
+      if (this.x < cols - 1 && this.y < rows - 1) {
+        this.adjacent.push(grid[this.y + 1][this.x + 1]);
+      }
     }
-    */
   };
 }
 
 function heuristic(a, b) {
-  return dist(a.x, a.y, b.x, b.y);
+  return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
 }
 
 function removeFromArray(arr, elt) {
@@ -114,7 +116,7 @@ function a_star() {
 
     if (current.x === end.x && current.y === end.y) {
       noLoop();
-      console.log("DONE");
+      console.log('DONE');
     }
 
     removeFromArray(openedSet, current);
@@ -149,7 +151,7 @@ function a_star() {
 
     buildPath(current);
   } else {
-    console.log("no solution");
+    console.log('no solution');
     noLoop();
     return;
     // no solution
@@ -218,7 +220,7 @@ function dijkstra() {
   if (getUnvistedLength() > 0) {
     let minCoords = getUnvisitedCellWithMinDistance();
     if (minCoords.x === null || minCoords.y === null) {
-      console.log("NOT POSSIBLE");
+      console.log('NOT POSSIBLE');
       noLoop();
       return;
     }
@@ -229,11 +231,11 @@ function dijkstra() {
 
     buildPath(min);
 
-    if (min.x === end.x && min.y === end.y) {
-      console.log("FOUND");
-      noLoop();
-      return;
-    }
+    // if (min.x === end.x && min.y === end.y) {
+    //   console.log('FOUND');
+    //   noLoop();
+    //   return;
+    // }
 
     for (let i = 0; i < min.adjacent.length; ++i) {
       let adj = min.adjacent[i];
@@ -245,9 +247,15 @@ function dijkstra() {
         grid[adj.y][adj.x].distance = dist;
         grid[adj.y][adj.x].previous = min;
       }
+
+      if (adj.y === end.y && adj.x === end.x) {
+        console.log('FOUND');
+        noLoop();
+        return;
+      }
     }
   } else {
-    console.log("NOT FOUND");
+    console.log('NOT FOUND');
     noLoop();
   }
 }
@@ -259,13 +267,13 @@ function setup() {
   width = canvasWidth / cols;
 
   start = {
-    x: 0,
-    y: 0
+    x: 10,
+    y: 10
   };
 
   end = {
-    x: cols - 1,
-    y: rows - 1
+    x: 15,
+    y: 19
   };
 
   for (let i = 0; i < rows; ++i) {
@@ -296,10 +304,84 @@ function draw() {
     }
   }
 
-  dijkstra();
-  //a_star();
+  if (started) {
+    let e = document.getElementById('algo');
+    let val = e.options[e.selectedIndex].value;
+
+    if (val === 'dijkstra') {
+      dijkstra();
+    } else {
+      a_star();
+    }
+  } else {
+    noLoop();
+  }
 
   for (let i = 0; i < path.length; ++i) {
     path[i].show(color(255, 255, 0));
   }
+
+  grid[start.y][start.x].show(color(0, 0, 255));
+  grid[end.y][end.x].show(color(0, 255, 0));
+}
+
+document.getElementById('start-button').addEventListener('click', function() {
+  started = true;
+  loop();
+});
+
+var startSelected = false;
+var endSelected = false;
+
+function mousePressed() {
+  var currX = Math.floor(mouseX / width);
+  var currY = Math.floor(mouseY / height);
+
+  if (currX === start.x && currY === start.y) {
+    console.log('true');
+    startSelected = true;
+  } else if (currX === end.x && currY === end.y) {
+    endSelected = true;
+  }
+}
+
+function mouseReleased() {
+  startSelected = false;
+  endSelected = false;
+}
+
+function mouseDragged() {
+  var currX = Math.floor(mouseX / width);
+  var currY = Math.floor(mouseY / height);
+
+  if (startSelected) {
+    grid[start.y][start.x].distance = infinity;
+    grid[start.y][start.x].show(color(255));
+
+    start.x = currX;
+    start.y = currY;
+
+    grid[start.y][start.x].distance = 0;
+    grid[start.y][start.x].show(color(0, 0, 255));
+    openedSet = [];
+    openedSet.push(grid[start.y][start.x]);
+    return;
+  }
+
+  if (endSelected) {
+    grid[end.y][end.x].show(color(255));
+
+    end.x = currX;
+    end.y = currY;
+
+    if (currX > 0 && currX < cols - 1 && currY > 0 && currY < rows - 1) {
+      grid[end.y][end.x].show(color(0, 255, 0));
+    }
+
+    return;
+  }
+
+  grid[currY][currX].show(color(0, 255, 0));
+  grid[currY][currX].wall = true;
+  grid[currY][currX].show(color(0, 0, 0));
 }
