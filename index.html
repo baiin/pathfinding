@@ -9,19 +9,126 @@
       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
       crossorigin="anonymous"
     />
+    <style>
+      #header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      #actions {
+        display: flex;
+        flex-direction: row;
+        justify-content: end;
+        align-content: center;
+      }
+
+      #actions > div {
+        margin: 5px;
+      }
+
+      .block {
+        width: 25px;
+        height: 25px;
+        border: 0.5px solid black;
+      }
+
+      .start-block {
+        background-color: rgb(0, 0, 255);
+      }
+
+      .end-block {
+        background-color: rgb(0, 255, 0);
+      }
+
+      .visited-block {
+        background-color: rgb(255, 153, 51);
+      }
+
+      .adjacent-block {
+        background-color: rgb(255, 51, 0);
+      }
+
+      .empty-block {
+        background-color: rgb(255, 255, 255);
+      }
+
+      .obstacle-block {
+        background-color: rgb(0, 0, 0);
+      }
+
+      .display {
+        display: flex;
+        flex-direction: row;
+        margin: 10px;
+      }
+
+      .display-block {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .display-block > div {
+        margin: 20px;
+      }
+    </style>
   </head>
-  <body>
-    <h1>Pathfinding</h1>
+  <body class="text-center">
+    <div id="header">
+      <h1>Pathfinding</h1>
+      <div id="actions">
+        <div>
+          <button class="btn btn-primary" id="start-button">start</button>
+        </div>
+        <div>
+          <button class="btn btn-warning" id="reset-button">reset</button>
+        </div>
+        <div>
+          <select class="form-control" id="algo" style="width:200px">
+            <option value="dijkstra">dijkstra</option>
+            <option value="a_star">a* star</option>
+          </select>
+        </div>
+      </div>
+    </div>
 
-    <button class="btn btn-primary" id="start-button">start</button>
-    <button class="btn btn-warning" id="reset-button">reset</button>
+    <div class="display-block">
+      <div>
+        <div class="display">
+          <div class="block start-block"></div>
+          &nbsp;Starting Block
+        </div>
+        <div class="display">
+          <div class="block end-block"></div>
+          &nbsp;Ending Block
+        </div>
+      </div>
 
-    <select class="form-control" id="algo" style="width:200px">
-      <option value="dijkstra">dijkstra</option>
-      <option value="a_star">a* star</option>
-    </select>
-    <br />
-    <br />
+      <div>
+        <div class="display">
+          <div class="block visited-block"></div>
+          &nbsp;Visited Block
+        </div>
+        <div class="display">
+          <div class="block adjacent-block"></div>
+          &nbsp;Adjacent Block
+        </div>
+      </div>
+
+      <div>
+        <div class="display">
+          <div class="block empty-block"></div>
+          &nbsp;Empty Block
+        </div>
+        <div class="display">
+          <div class="block obstacle-block"></div>
+          &nbsp;Obstacle Block
+        </div>
+      </div>
+    </div>
 
     <script
       src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

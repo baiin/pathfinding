@@ -20,17 +20,12 @@ function Cell(x, y) {
   this.f = 0;
   this.g = 0;
   this.h = 0;
-  this.shortestPaths = [];
   this.visited = false;
   this.previous = null;
   this.distance = this.x === start.x && this.y === start.y ? 0 : infinity;
   this.adjacent = [];
   this.isAdjecent = false;
   this.wall = false;
-
-  // if (random(1) < 0.3) {
-  //   this.wall = true;
-  // }
 
   this.show = function(color) {
     stroke(0);
@@ -41,6 +36,20 @@ function Cell(x, y) {
     }
 
     rect(this.x * width, this.y * height, width, height);
+  };
+
+  this.clear = function(clearWall) {
+    this.isAdjecent = false;
+    this.visited = false;
+    this.previous = null;
+    this.distance = this.x === start.x && this.y === start.y ? 0 : infinity;
+    this.f = 0;
+    this.g = 0;
+    this.h = 0;
+
+    if (clearWall) {
+      this.wall = false;
+    }
   };
 
   this.loadAdjacent = function() {
@@ -113,8 +122,9 @@ function a_star() {
     var current = openedSet[winner];
 
     if (current.x === end.x && current.y === end.y) {
+      console.log('SOLUTION FOUND');
       noLoop();
-      console.log("DONE");
+      return;
     }
 
     removeFromArray(openedSet, current);
@@ -149,10 +159,9 @@ function a_star() {
 
     buildPath(current);
   } else {
-    console.log("no solution");
+    console.log('NO SOLUTION');
     noLoop();
     return;
-    // no solution
   }
 }
 
@@ -218,7 +227,7 @@ function dijkstra() {
   if (getUnvistedLength() > 0) {
     let minCoords = getUnvisitedCellWithMinDistance();
     if (minCoords.x === null || minCoords.y === null) {
-      console.log("NOT POSSIBLE");
+      console.log('NOT POSSIBLE');
       noLoop();
       return;
     }
@@ -228,12 +237,6 @@ function dijkstra() {
     let min = grid[minCoords.y][minCoords.x];
 
     buildPath(min);
-
-    // if (min.x === end.x && min.y === end.y) {
-    //   console.log('FOUND');
-    //   noLoop();
-    //   return;
-    // }
 
     for (let i = 0; i < min.adjacent.length; ++i) {
       let adj = min.adjacent[i];
@@ -247,13 +250,13 @@ function dijkstra() {
       }
 
       if (adj.y === end.y && adj.x === end.x) {
-        console.log("FOUND");
+        console.log('FOUND');
         noLoop();
         return;
       }
     }
   } else {
-    console.log("NOT FOUND");
+    console.log('NOT FOUND');
     noLoop();
   }
 }
@@ -291,10 +294,10 @@ function draw() {
   }
 
   if (started) {
-    let e = document.getElementById("algo");
+    let e = document.getElementById('algo');
     let val = e.options[e.selectedIndex].value;
 
-    if (val === "dijkstra") {
+    if (val === 'dijkstra') {
       dijkstra();
     } else {
       a_star();
@@ -311,14 +314,18 @@ function draw() {
   grid[end.y][end.x].show(color(0, 255, 0));
 }
 
-document.getElementById("start-button").addEventListener("click", function() {
-  started = true;
-  loop();
-});
+function softReset() {
+  for (var i = 0; i < rows; ++i) {
+    for (var j = 0; j < cols; ++j) {
+      grid[i][j].clear(false);
+    }
+  }
 
-document.getElementById("reset-button").addEventListener("click", function() {
-  reset();
-});
+  path = [];
+  closedSet = [];
+  openedSet = [];
+  openedSet.push(grid[start.y][start.x]);
+}
 
 function reset() {
   noLoop();
@@ -339,6 +346,8 @@ function reset() {
     }
   }
 
+  path = [];
+
   grid[start.y][start.x].show(color(0, 0, 255));
   grid[end.y][end.x].show(color(0, 255, 0));
 
@@ -353,11 +362,22 @@ function reset() {
 var startSelected = false;
 var endSelected = false;
 
+function mouseInCanvas() {
+  var currX = Math.floor(mouseX / width);
+  var currY = Math.floor(mouseY / height);
+
+  if (currY >= 0 && currY <= rows - 1 && currX >= 0 && currX <= cols - 1) {
+    return true;
+  }
+
+  return false;
+}
+
 function mousePressed() {
   var currX = Math.floor(mouseX / width);
   var currY = Math.floor(mouseY / height);
 
-  if (started) {
+  if (started && mouseInCanvas()) {
     reset();
   }
   if (currX === start.x && currY === start.y) {
@@ -376,7 +396,7 @@ function mouseDragged() {
   var currX = Math.floor(mouseX / width);
   var currY = Math.floor(mouseY / height);
 
-  if (currY >= 0 && currY <= rows - 1 && currX >= 0 && currX <= cols - 1) {
+  if (mouseInCanvas()) {
     if (startSelected) {
       grid[start.y][start.x].distance = infinity;
       grid[start.y][start.x].show(color(255));
@@ -406,7 +426,7 @@ function mouseDragged() {
       (currY === start.y && currX === start.x) ||
       (currY === end.y && currX === end.x)
     ) {
-      console.log("skip");
+      console.log('skip');
     } else {
       grid[currY][currX].show(color(0, 255, 0));
       grid[currY][currX].wall = true;
@@ -414,3 +434,16 @@ function mouseDragged() {
     }
   }
 }
+
+document.getElementById('start-button').addEventListener('click', function() {
+  if (started) {
+    softReset();
+  }
+
+  started = true;
+  loop();
+});
+
+document.getElementById('reset-button').addEventListener('click', function() {
+  reset();
+});
