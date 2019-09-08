@@ -1,7 +1,7 @@
-var canvasHeight = 500;
-var canvasWidth = 500;
-var cols = 20;
-var rows = 20;
+var canvasHeight = 600;
+var canvasWidth = 800;
+var cols = 28;
+var rows = 21;
 var height, width;
 var grid = new Array(rows);
 var infinity = Number.MAX_VALUE;
@@ -287,8 +287,8 @@ function setup() {
 function draw() {
   background(0);
 
-  for (var i = 0; i < cols; ++i) {
-    for (var j = 0; j < rows; ++j) {
+  for (var i = 0; i < rows; ++i) {
+    for (var j = 0; j < cols; ++j) {
       grid[i][j].show(color(255));
     }
   }
@@ -380,6 +380,7 @@ function mousePressed() {
   if (started && mouseInCanvas()) {
     reset();
   }
+
   if (currX === start.x && currY === start.y) {
     startSelected = true;
   } else if (currX === end.x && currY === end.y) {
