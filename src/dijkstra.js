@@ -53,7 +53,7 @@ function dijkstra_update() {
     if (minCoords.x === null || minCoords.y === null) {
       alert(
         'failed',
-        "<strong>>Dijkstra's Algorithm: no possible paths available to ending block</strong>"
+        "<strong>Dijkstra's Algorithm: no possible paths available to ending block</strong>"
       );
       noLoop();
       return;
@@ -88,7 +88,7 @@ function dijkstra_update() {
   } else {
     alert(
       'failed',
-      "<strong>>Dijkstra's Algorithm: no possible paths available to ending block</strong>"
+      "<strong>Dijkstra's Algorithm: no possible paths available to ending block</strong>"
     );
     noLoop();
   }
