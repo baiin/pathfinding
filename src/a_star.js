@@ -37,7 +37,10 @@ function a_star_update() {
     var current = openedSet[winner];
 
     if (current.x === end.x && current.y === end.y) {
-      console.log('SOLUTION FOUND');
+      alert(
+        'success',
+        '<strong>A* Algorithm: shortest path found to ending block</strong>'
+      );
       noLoop();
       return;
     }
@@ -74,7 +77,10 @@ function a_star_update() {
 
     buildPath(current);
   } else {
-    console.log('NO SOLUTION');
+    alert(
+      'failed',
+      '<strong>A* Algorithm: no possible paths available to ending block</strong>'
+    );
     noLoop();
     return;
   }

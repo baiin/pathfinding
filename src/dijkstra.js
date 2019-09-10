@@ -51,7 +51,10 @@ function dijkstra_update() {
   if (getUnvistedLength() > 0) {
     let minCoords = getUnvisitedCellWithMinDistance();
     if (minCoords.x === null || minCoords.y === null) {
-      console.log('NOT POSSIBLE');
+      alert(
+        'failed',
+        "<strong>>Dijkstra's Algorithm: no possible paths available to ending block</strong>"
+      );
       noLoop();
       return;
     }
@@ -74,13 +77,19 @@ function dijkstra_update() {
       }
 
       if (adj.y === end.y && adj.x === end.x) {
-        console.log('FOUND');
+        alert(
+          'success',
+          "<strong>Dijkstra's Algorithm: shortest path found to ending block</strong>"
+        );
         noLoop();
         return;
       }
     }
   } else {
-    console.log('NOT FOUND');
+    alert(
+      'failed',
+      "<strong>>Dijkstra's Algorithm: no possible paths available to ending block</strong>"
+    );
     noLoop();
   }
 }

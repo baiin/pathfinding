@@ -2,6 +2,8 @@ var startSelected = false;
 var endSelected = false;
 
 function softReset() {
+  hide_alerts();
+
   for (var i = 0; i < rows; ++i) {
     for (var j = 0; j < cols; ++j) {
       grid[i][j].clear(false);
@@ -16,6 +18,7 @@ function softReset() {
 
 function reset() {
   noLoop();
+  hide_alerts();
   started = false;
   grid = new Array(rows);
 
@@ -166,6 +169,17 @@ function points_draw() {
 function get_algorithm() {
   let e = document.getElementById('algo');
   return e.options[e.selectedIndex].value;
+}
+
+function hide_alerts() {
+  document.getElementById(`success-alert`).style.display = 'none';
+  document.getElementById(`failed-alert`).style.display = 'none';
+}
+
+function alert(type, message) {
+  hide_alerts();
+  document.getElementById(`${type}-alert`).innerHTML = message;
+  document.getElementById(`${type}-alert`).style.display = 'block';
 }
 
 document.getElementById('start-button').addEventListener('click', function() {
