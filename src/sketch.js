@@ -1,7 +1,7 @@
 var canvasHeight = 600;
-var canvasWidth = 800;
-var cols = 28;
-var rows = 21;
+var canvasWidth = window.screen.width - 40;
+var cols = Math.floor(20 * (canvasWidth / canvasHeight));
+var rows = 20;
 var height, width;
 var grid = new Array(rows);
 var start, end;
