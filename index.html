@@ -10,6 +10,10 @@
       crossorigin="anonymous"
     />
     <style>
+      body {
+        background-color: antiquewhite;
+      }
+
       #header {
         display: flex;
         flex-direction: row;
@@ -17,14 +21,14 @@
         align-items: center;
       }
 
-      #actions {
+      .actions {
         display: flex;
         flex-direction: row;
         justify-content: end;
         align-content: center;
       }
 
-      #actions > div {
+      .actions > div {
         margin: 5px;
       }
 
@@ -77,14 +81,20 @@
     </style>
   </head>
   <body class="text-center">
-    <div id="header">
-      <h1>Pathfinding</h1>
-      <div id="actions">
+    <nav class="navbar navbar-dark bg-dark">
+      <a class="navbar-brand" style="color:white;">
+        <h3>pathfinding</h3>
+      </a>
+      <div class="actions form-inline">
         <div>
-          <button class="btn btn-primary" id="start-button">start</button>
+          <button class="btn btn-primary" id="start-button">
+            start
+          </button>
         </div>
         <div>
-          <button class="btn btn-warning" id="reset-button">reset</button>
+          <button class="btn btn-warning" id="reset-button">
+            reset
+          </button>
         </div>
         <div>
           <select class="form-control" id="algo" style="width:200px">
@@ -93,7 +103,7 @@
           </select>
         </div>
       </div>
-    </div>
+    </nav>
 
     <div class="display-block">
       <div>
@@ -121,7 +131,7 @@
       <div>
         <div class="display">
           <div class="block path-block"></div>
-          &nbsp;Path Block
+          &nbsp;Shortest Path Block
         </div>
         <div class="display">
           <div class="block obstacle-block"></div>
@@ -147,9 +157,9 @@
     ></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.js"></script>
     <script src="src/sketch.js"></script>
+    <script src="src/helper.js"></script>
     <script src="src/cell.js"></script>
     <script src="src/dijkstra.js"></script>
     <script src="src/a_star.js"></script>
-    <script src="src/helper.js"></script>
   </body>
 </html>

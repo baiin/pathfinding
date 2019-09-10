@@ -167,3 +167,16 @@ function get_algorithm() {
   let e = document.getElementById('algo');
   return e.options[e.selectedIndex].value;
 }
+
+document.getElementById('start-button').addEventListener('click', function() {
+  if (started) {
+    softReset();
+  }
+
+  started = true;
+  loop();
+});
+
+document.getElementById('reset-button').addEventListener('click', function() {
+  reset();
+});

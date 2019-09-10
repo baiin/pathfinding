@@ -10,6 +10,7 @@ var started = false;
 
 function setup() {
   createCanvas(canvasWidth, canvasHeight);
+  background(0);
   frameRate(30);
   height = canvasHeight / rows;
   width = canvasWidth / cols;
@@ -18,14 +19,10 @@ function setup() {
 }
 
 function draw() {
-  background(0);
   empty_cell_draw();
 
   if (started) {
-    let e = document.getElementById('algo');
-    let val = e.options[e.selectedIndex].value;
-
-    if (val === 'dijkstra') {
+    if (get_algorithm() === 'dijkstra') {
       dijkstra_update();
       dijkstra_draw();
     } else {
@@ -39,16 +36,3 @@ function draw() {
   path_draw();
   points_draw();
 }
-
-document.getElementById('start-button').addEventListener('click', function() {
-  if (started) {
-    softReset();
-  }
-
-  started = true;
-  loop();
-});
-
-document.getElementById('reset-button').addEventListener('click', function() {
-  reset();
-});
