@@ -1,5 +1,5 @@
-var canvasHeight = 600;
-var canvasWidth = 600;
+var canvasHeight = 500;
+var canvasWidth = 500;
 var cols = 30;
 var rows = 30;
 var height, width;
