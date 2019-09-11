@@ -1,6 +1,6 @@
 var canvasHeight = 500;
-var canvasWidth = 500;
-var cols = 30;
+var canvasWidth = window.screen.width - 40;
+var cols = Math.floor((canvasWidth / canvasHeight) * 30);
 var rows = 30;
 var height, width;
 var grid = new Array(rows);

@@ -5,17 +5,20 @@ function removeCellBetween(a, b) {
   var xDiff = a.x - b.x;
   var yDiff = a.y - b.y;
 
+  console.log("a", a);
+  console.log("b", b);
   // left
   if (xDiff === 2) {
-    grid[a.x - 1][a.y].wall = false;
+    grid[a.y][a.x - 1].wall = false;
   } else if (xDiff === -2) {
-    grid[a.x + 1][a.y].wall = false;
+    grid[a.y][a.x + 1].wall = false;
   }
 
   if (yDiff === 2) {
-    grid[a.x][a.y - 1].wall = false;
+    grid[a.y - 1][a.x].wall = false;
   } else if (yDiff === -2) {
-    grid[a.x][a.y + 1].wall = false;
+    console.log(a.x, grid[a.x]);
+    grid[a.y + 1][a.x].wall = false;
   }
 }
 
