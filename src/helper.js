@@ -138,7 +138,7 @@ function mouseDragged() {
       (currY === start.y && currX === start.x) ||
       (currY === end.y && currX === end.x)
     ) {
-      console.log('skip');
+      console.log("skip");
     } else {
       grid[currY][currX].show(color(0, 255, 0));
       grid[currY][currX].wall = true;
@@ -167,22 +167,22 @@ function points_draw() {
 }
 
 function get_algorithm() {
-  let e = document.getElementById('algo');
+  let e = document.getElementById("algo");
   return e.options[e.selectedIndex].value;
 }
 
 function hide_alerts() {
-  document.getElementById(`success-alert`).style.display = 'none';
-  document.getElementById(`failed-alert`).style.display = 'none';
+  document.getElementById(`success-alert`).style.display = "none";
+  document.getElementById(`failed-alert`).style.display = "none";
 }
 
 function alert(type, message) {
   hide_alerts();
   document.getElementById(`${type}-alert`).innerHTML = message;
-  document.getElementById(`${type}-alert`).style.display = 'block';
+  document.getElementById(`${type}-alert`).style.display = "block";
 }
 
-document.getElementById('start-button').addEventListener('click', function() {
+document.getElementById("start-button").addEventListener("click", function() {
   if (started) {
     softReset();
   }
@@ -191,6 +191,7 @@ document.getElementById('start-button').addEventListener('click', function() {
   loop();
 });
 
-document.getElementById('reset-button').addEventListener('click', function() {
+document.getElementById("reset-button").addEventListener("click", function() {
   reset();
+  console.log("reset");
 });

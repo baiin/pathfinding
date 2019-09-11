@@ -11,6 +11,7 @@ function Cell(x, y) {
   this.previous = null;
   this.distance = this.x === start.x && this.y === start.y ? 0 : infinity;
   this.adjacent = [];
+  this.neighbors = [];
   this.isAdjecent = false;
   this.wall = false;
 
@@ -73,5 +74,28 @@ function Cell(x, y) {
         this.adjacent.push(grid[this.y + 1][this.x + 1]);
       }
     }
+  };
+
+  this.checkNeighbors = function() {
+    this.neighbors = [];
+
+    if (this.y > 1 && !grid[this.y - 2][this.x].visited) {
+      this.neighbors.push(grid[this.y - 2][this.x]);
+    }
+
+    if (this.y < rows - 2 && !grid[this.y + 2][this.x].visited) {
+      this.neighbors.push(grid[this.y + 2][this.x]);
+    }
+
+    if (this.x > 2 && !grid[this.y][this.x - 2].visited) {
+      this.neighbors.push(grid[this.y][this.x - 2]);
+    }
+
+    if (this.x < cols - 2 && !grid[this.y][this.x + 2].visited) {
+      this.neighbors.push(grid[this.y][this.x + 2]);
+    }
+
+    var r = floor(random(0, this.neighbors.length));
+    return this.neighbors[r];
   };
 }

@@ -1,7 +1,7 @@
 var canvasHeight = 600;
-var canvasWidth = window.screen.width - 40;
-var cols = Math.floor(20 * (canvasWidth / canvasHeight));
-var rows = 20;
+var canvasWidth = 600;
+var cols = 30;
+var rows = 30;
 var height, width;
 var grid = new Array(rows);
 var start, end;
@@ -22,7 +22,7 @@ function draw() {
   empty_cell_draw();
 
   if (started) {
-    if (get_algorithm() === 'dijkstra') {
+    if (get_algorithm() === "dijkstra") {
       dijkstra_update();
       dijkstra_draw();
     } else {
