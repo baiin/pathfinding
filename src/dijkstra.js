@@ -50,6 +50,7 @@ function dijkstra_draw() {
 function dijkstra_update() {
   if (getUnvistedLength() > 0) {
     let minCoords = getUnvisitedCellWithMinDistance();
+
     if (minCoords.x === null || minCoords.y === null) {
       alert(
         "failed",
@@ -77,6 +78,7 @@ function dijkstra_update() {
       }
 
       if (adj.y === end.y && adj.x === end.x) {
+        found = true;
         alert(
           "success",
           "<strong>Dijkstra's Algorithm: shortest path found to ending block</strong>"

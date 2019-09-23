@@ -19,6 +19,7 @@ function softReset() {
 function reset() {
   noLoop();
   hide_alerts();
+  found = false;
   started = false;
   grid = new Array(rows);
 
@@ -187,6 +188,7 @@ document.getElementById("start-button").addEventListener("click", function() {
     softReset();
   }
 
+  found = false;
   started = true;
   loop();
 });

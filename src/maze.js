@@ -5,8 +5,6 @@ function removeCellBetween(a, b) {
   var xDiff = a.x - b.x;
   var yDiff = a.y - b.y;
 
-  console.log("a", a);
-  console.log("b", b);
   // left
   if (xDiff === 2) {
     grid[a.y][a.x - 1].wall = false;
@@ -17,7 +15,6 @@ function removeCellBetween(a, b) {
   if (yDiff === 2) {
     grid[a.y - 1][a.x].wall = false;
   } else if (yDiff === -2) {
-    console.log(a.x, grid[a.x]);
     grid[a.y + 1][a.x].wall = false;
   }
 }
@@ -72,5 +69,6 @@ function maze() {
 }
 
 document.getElementById("maze-button").addEventListener("click", function() {
+  reset();
   maze();
 });
