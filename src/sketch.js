@@ -23,7 +23,7 @@ function draw() {
   empty_cell_draw();
 
   if (started) {
-    for (let i = 0; i < 10 && !found; ++i) {
+    for (let i = 0; i < 12 && !found; ++i) {
       if (get_algorithm() === "dijkstra") {
         dijkstra_update();
       } else {

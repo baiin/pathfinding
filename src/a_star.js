@@ -35,17 +35,7 @@ function a_star_update() {
     }
 
     var current = openedSet[winner];
-
-    if (current.x === end.x && current.y === end.y) {
-      found = true;
-      alert(
-        "success",
-        "<strong>A* Algorithm: shortest path found to ending block</strong>"
-      );
-      noLoop();
-      return;
-    }
-
+    buildPath(current);
     removeFromArray(openedSet, current);
     closedSet.push(current);
 
@@ -72,11 +62,21 @@ function a_star_update() {
           adjacent[i].h = heuristic(adjacent[i], end);
           adjacent[i].f = adjacent[i].g + adjacent[i].h;
           adjacent[i].previous = current;
+
+          if (adjacent[i].x === end.x && adjacent[i].y === end.y) {
+            found = true;
+            alert(
+              "success",
+              "<strong>A* Algorithm: shortest path found to ending block</strong>"
+            );
+            noLoop();
+            return;
+          }
         }
       }
     }
 
-    buildPath(current);
+    console.log("build");
   } else {
     alert(
       "failed",
